@@ -1,1 +1,6 @@
 /nbproject
+
+vendor/
+
+tests/WowtransferTestCredentials.php
+composer.lock
