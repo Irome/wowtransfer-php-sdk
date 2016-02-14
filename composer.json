@@ -1,0 +1,31 @@
+{
+    "name": "wowtransfer/php-sdk",
+    "description": "Wowtransfer SDK for PHP",
+    "keywords":["wowtransfer","sdk"],
+    "type":"library",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "require": {
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-0": {
+            "Wowtransfer": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Vyacheslav",
+            "email": "gracerpro@gmail.com"
+        },
+        {
+            "name": "Wowtransfer PHP SDK Contributors",
+            "homepage": "https://github.com/wowtransfer/wowtransfer-php-sdk/graphs/contributors"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/wowtransfer/wowtransfer-php-sdk/issues",
+        "wiki": "https://github.com/wowtransfer/wowtransfer-php-sdk/wiki"
+    }
+}
