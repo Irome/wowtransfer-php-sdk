@@ -24,7 +24,7 @@ class Service
 	/**
 	 * @var string API Base url, without / on end
 	 */
-	private $serviceBaseUrl;
+	private $serviceBaseUrl = 'http://wowtransfer.com/api/v1';
 
 	/**
 	 * @var string
@@ -107,7 +107,7 @@ class Service
 	public function setBaseUrl($url)
 	{
 		if (empty($url)) {
-			throw new \WowtransferException('Empty base url');
+			throw new ServiceException('Empty base url');
 		}
 
 		if ($url[strlen($url) - 1] === '/') {
@@ -124,6 +124,29 @@ class Service
 	public function getBaseUrl()
 	{
 		return $this->serviceBaseUrl;
+	}
+
+	/**
+	 * @param string $uri Example '/dumps', '/dumps/', 'dumps'
+	 * @return string Example http://wowtransfer.com/api/v1/dumps/
+	 */
+	private function getApiUrl($uri)
+	{
+		if ($uri{0} !== '/') {
+			$uri = '/' . $uri;
+		}
+		$params = '';
+		if (($paramPos = strpos($uri, '?')) !== false) {
+			$params = substr($uri, $paramPos);
+			$uri = substr($uri, 0, $paramPos);
+		}
+		$url = $this->getBaseUrl() . $uri;
+		if ($url{strlen($url) - 1} !== '/') {
+			$url .= '/';
+		}
+		$url .= $params;
+
+		return $url;
 	}
 
 	/**
@@ -328,29 +351,6 @@ class Service
 		}
 
 		return $wowServers;
-	}
-
-	/**
-	 * @param string $uri Example '/dumps', '/dumps/', 'dumps'
-	 * @return string Example http://wowtransfer.com/api/v1/dumps/
-	 */
-	private function getApiUrl($uri)
-	{
-		if ($uri{0} !== '/') {
-			$uri = '/' . $uri;
-		}
-		$params = '';
-		if (($paramPos = strpos($uri, '?')) !== false) {
-			$params = substr($uri, $paramPos);
-			$uri = substr($uri, 0, $paramPos);
-		}
-		$url = $this->getBaseUrl() . $uri;
-		if ($url{strlen($url) - 1} !== '/') {
-			$url .= '/';
-		}
-		$url .= $params;
-
-		return $url;
 	}
 
 	/**

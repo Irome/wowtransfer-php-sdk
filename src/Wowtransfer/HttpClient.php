@@ -2,7 +2,8 @@
 
 namespace Wowtransfer;
 
-use \Wowtransfer\Response;
+use Wowtransfer\Response;
+use Wowtransfer\Exceptions\ServiceException;
 
 class HttpClient
 {
@@ -44,7 +45,7 @@ class HttpClient
 
 		$curlErrorCode = curl_errno($this->curlHandle);
 		if ($curlErrorCode) {
-			throw new Extensions\ServiceException(curl_error($this->curlHandle), $curlErrorCode);
+			throw new ServiceException(curl_error($this->curlHandle), $curlErrorCode);
 		}
 		$httpStatusCode = curl_getinfo($this->curlHandle, CURLINFO_HTTP_CODE);
 

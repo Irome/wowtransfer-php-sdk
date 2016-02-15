@@ -99,6 +99,6 @@ class Response
 	 */
 	public function decodeBody()
 	{
-		$this->decodedBody = json_decode($this->body);
+		$this->decodedBody = json_decode($this->body, true);
 	}
 }
