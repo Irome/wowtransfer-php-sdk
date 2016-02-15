@@ -29,4 +29,46 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 		$version = $this->service->getApiVersion();
 		$this->assertNotEmpty($version);
 	}
+
+	public function testGetWowServers()
+	{
+		$this->service->getWowServers();
+	}
+
+	public function testGetWowServer()
+	{
+	}
+
+	public function testGetCores()
+	{
+		$cores = $this->service->getCores();
+		$this->assertNotEmpty($cores);
+	}
+
+	public function testGetProducts()
+	{
+		$products = $this->service->getProducts();
+		$this->assertNotEmpty($products);
+	}
+
+	public function testGetProduct()
+	{
+	}
+
+	public function testGetTransferConfigs()
+	{
+		$this->service->getTransferConfigs();
+	}
+
+	public function testGetTransferConfig()
+	{
+	}
+
+	public function testGetDump()
+	{
+	}
+
+	public function testDumpToSql()
+	{
+	}
 }
