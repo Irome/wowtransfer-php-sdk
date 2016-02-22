@@ -71,4 +71,19 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 	public function testDumpToSql()
 	{
 	}
+
+	public function testGetUserInfo()
+	{
+		$user = $this->service->getUserInfo();
+	}
+
+	public function testAuthByBasic()
+	{
+
+	}
+
+	public function testAuthByAccesToken()
+	{
+
+	}
 }

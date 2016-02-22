@@ -34,6 +34,16 @@ class Service
 	/**
 	 * @var string
 	 */
+	private $username;
+
+	/**
+	 * @var string
+	 */
+	private $password;
+
+	/**
+	 * @var string
+	 */
 	protected $language;
 
 	/**
@@ -87,17 +97,39 @@ class Service
 	/**
 	 * @return string
 	 */
-	public static function getApiBaseUrl()
-	{
-		return 'http://wowtransfer.com/api/v1';
-	}
-
-	/**
-	 * @return string
-	 */
 	private function getAccessToken()
 	{
 		return $this->accessToken;
+	}
+
+	/**
+	 * @param string $token
+	 * @return \Wowtransfer\Service
+	 */
+	public function setAccessToken($token)
+	{
+		$this->accessToken = $token;
+		return $this;
+	}
+
+	/**
+	 * @param string $username
+	 * @return \Wowtransfer\Service
+	 */
+	public function setUsername($username)
+	{
+		$this->username = $username;
+		return $this;
+	}
+
+	/**
+	 * @param string $password
+	 * @return \Wowtransfer\Service
+	 */
+	public function setPassword($password)
+	{
+		$this->password = $password;
+		return $this;
 	}
 
 	/**
@@ -130,21 +162,23 @@ class Service
 	 * @param string $uri Example '/dumps', '/dumps/', 'dumps'
 	 * @return string Example http://wowtransfer.com/api/v1/dumps/
 	 */
-	private function getApiUrl($uri)
+	private function getApiUrl($uri, $params = [])
 	{
 		if ($uri{0} !== '/') {
 			$uri = '/' . $uri;
 		}
-		$params = '';
+		/*$params = '';
 		if (($paramPos = strpos($uri, '?')) !== false) {
 			$params = substr($uri, $paramPos);
 			$uri = substr($uri, 0, $paramPos);
-		}
+		}*/
 		$url = $this->getBaseUrl() . $uri;
 		if ($url{strlen($url) - 1} !== '/') {
 			$url .= '/';
 		}
-		$url .= $params;
+		if ($params) {
+			$url .= '?' . http_build_query($params);
+		}
 
 		return $url;
 	}
@@ -200,10 +234,10 @@ class Service
 				throw new ServiceException($decodedBody['error_message']);
 			}
 			if ($errorMessage) {
-				$errorMessage .= ', response status code ' . $this->lastHttpStatus;
+				$errorMessage .= ', response status code ' . $response->getHttpStatusCode();
 			}
 			else {
-				$errorMessage = 'Response status code ' . $this->lastHttpStatus;
+				$errorMessage = 'Response status code ' . $response->getHttpStatusCode();
 			}
 			throw new ServiceException($errorMessage);
 		}
@@ -252,7 +286,8 @@ class Service
 	public function getTransferConfigs()
 	{
 		if ($this->transferConfigs === null) {
-			$url = $this->getApiUrl('/tconfigs' . '?access_token=' . $this->getAccessToken());
+			$params = ['access_token' => $this->getAccessToken()];
+			$url = $this->getApiUrl('/tconfigs', $params);
 			$response = $this->httpClient->send($url);
 			$errorMessage = "Couldn't get transfer configurations from service";
 			$this->checkDecodedResponse($response, $errorMessage);
@@ -268,7 +303,8 @@ class Service
 	public function getTransferConfig($id)
 	{
 		$tconfigId = (int) $id;
-		$url = $this->getApiUrl('/user/tconfigs/' . $tconfigId . '?access_token=' . $this->getAccessToken());
+		$params = ['access_token' => $this->getAccessToken()];
+		$url = $this->getApiUrl('/user/tconfigs/' . $tconfigId, $params);
 		$response = $this->httpClient->send($url);
 		$errorMessage = "Could't get transfer configuration #$tconfigId from service";
 		$this->checkDecodedResponse($response, $errorMessage);
@@ -414,6 +450,22 @@ class Service
 		return $product;
 	}
 
+	/**
+	 * @return array
+	 */
+	public function getUserInfo()
+	{
+		$params = ['access_token' => $this->accessToken];
+		$headers = [];
+		if ($this->username && $this->password) {
+			$authValue = base64_encode($this->username . ':' . $this->password);
+			$headers[] = 'Authorization: Basic ' . $authValue;
+		}
+		$url = $this->getApiUrl('/user', $params);
+		$response = $this->httpClient->send($url, 'GET', null, $headers);
+		$this->checkDecodedResponse($response);
+		return $response->getDecodedBody();
+	}
 }
 
 /**

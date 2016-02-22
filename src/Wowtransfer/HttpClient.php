@@ -28,10 +28,11 @@ class HttpClient
 			CURLOPT_CUSTOMREQUEST => $method,
             CURLOPT_URL => $url,
             CURLOPT_CONNECTTIMEOUT => 10,
-            //CURLOPT_TIMEOUT => $timeOut,
-            //CURLOPT_HEADER => true, // Enable header processing
-            //CURLOPT_SSL_VERIFYHOST => 2,
-            //CURLOPT_SSL_VERIFYPEER => true,
+			//CURLOPT_TIMEOUT => $timeOut,
+			//CURLOPT_HEADER => 1,
+			//CURLOPT_VERBOSE => 1,
+			//CURLOPT_SSL_VERIFYHOST => 2,
+			//CURLOPT_SSL_VERIFYPEER => true,
 		];
 		if ($method !== 'GET') {
             $initOptions[CURLOPT_POSTFIELDS] = $body;
