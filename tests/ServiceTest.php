@@ -74,16 +74,39 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
 	public function testGetUserInfo()
 	{
-		$user = $this->service->getUserInfo();
+		$this->service->getUserInfo();
 	}
 
 	public function testAuthByBasic()
 	{
+		$service = $this->service;
+		$accessToken = $service->getAccessToken();
 
+		$service->setAccessToken('');
+		$service->setUsername(WowtransferTestCredentials::$username);
+		$service->setPassword(WowtransferTestCredentials::$password);
+
+		$service->getUserInfo();
+
+		$service->setUsername('');
+		$service->setPassword('');
+		$service->setAccessToken($accessToken);
 	}
 
 	public function testAuthByAccesToken()
 	{
+		$service = $this->service;
 
+		$username = $service->getUsername();
+		$password = $service->getPassword();
+		$accessToken = $service->getAccessToken();
+
+		$service->setAccessToken(WowtransferTestCredentials::$accessToken);
+
+		$service->getUserInfo();
+
+		$service->setAccessToken($accessToken);
+		$service->setUsername($username);
+		$service->setPassword($password);
 	}
 }

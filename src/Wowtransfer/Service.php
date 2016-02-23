@@ -103,7 +103,7 @@ class Service
 	/**
 	 * @return string
 	 */
-	private function getAccessToken()
+	public function getAccessToken()
 	{
 		return $this->accessToken;
 	}
@@ -129,6 +129,14 @@ class Service
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getUsername()
+	{
+		return $this->username;
+	}
+
+	/**
 	 * @param string $password
 	 * @return \Wowtransfer\Service
 	 */
@@ -136,6 +144,14 @@ class Service
 	{
 		$this->password = $password;
 		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getPassword()
+	{
+		return $this->password;
 	}
 
 	/**
