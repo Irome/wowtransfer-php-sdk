@@ -114,4 +114,12 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->service->getUsers();
 	}
+
+	/**
+	 * @todo id into the config
+	 */
+	public function testGetUserById()
+	{
+		$this->service->getUsersById(1);
+	}
 }

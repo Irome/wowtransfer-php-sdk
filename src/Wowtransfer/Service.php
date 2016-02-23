@@ -506,6 +506,21 @@ class Service
 		$this->checkDecodedResponse($response, $errorMessage);
 		return $response->getDecodedBody();
 	}
+
+	/**
+	 * @return array
+	 */
+	public function getUsersById($userId)
+	{
+		if (empty($userId)) {
+			throw new \Wowtransfer\Exceptions\ServiceException('Empty user id');
+		}
+		$url = $this->getApiUrl('/users/' . $userId);
+		$response = $this->httpClient->send($url);
+		$errorMessage = "Couldn't retrieve user by id";
+		$this->checkDecodedResponse($response, $errorMessage);
+		return $response->getDecodedBody();
+	}
 }
 
 /**
