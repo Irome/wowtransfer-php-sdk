@@ -488,6 +488,24 @@ class Service
 		$this->checkDecodedResponse($response);
 		return $response->getDecodedBody();
 	}
+
+	/**
+	 * @param int $pageNumber Start with 1
+	 * @param int $perPage
+	 * @return array
+	 */
+	public function getUsers($pageNumber = 1, $perPage = 100)
+	{
+		$params = [
+			'page' => $pageNumber,
+			'per_page' => $perPage,
+		];
+		$url = $this->getApiUrl('/users', $params);
+		$response = $this->httpClient->send($url);
+		$errorMessage = "Couldn't retrieve users";
+		$this->checkDecodedResponse($response, $errorMessage);
+		return $response->getDecodedBody();
+	}
 }
 
 /**

@@ -109,4 +109,9 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 		$service->setUsername($username);
 		$service->setPassword($password);
 	}
+
+	public function testGetUsers()
+	{
+		$this->service->getUsers();
+	}
 }
