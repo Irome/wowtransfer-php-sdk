@@ -4,3 +4,5 @@ vendor/
 
 tests/WowtransferTestCredentials.php
 composer.lock
+
+*-local*

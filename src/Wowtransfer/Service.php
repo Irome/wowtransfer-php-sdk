@@ -6,6 +6,7 @@ use Wowtransfer\Exceptions\ServiceException;
 use Wowtransfer\WowServer;
 use Wowtransfer\Realm;
 use Wowtransfer\Product;
+use Wowtransfer\Config;
 
 /**
  * Main class of the service
@@ -72,6 +73,11 @@ class Service
 			throw new ServiceException('Empty access token');
 		}
 		$this->accessToken = $accessToken;
+
+		$config = Config::getInstance();
+		if ($config->getServiceBaseUrl()) {
+			$this->serviceBaseUrl = $config->getServiceBaseUrl();
+		}
 
 		$this->httpClient = new \Wowtransfer\HttpClient();
 	}
