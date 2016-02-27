@@ -53,6 +53,9 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
 	public function testGetProduct()
 	{
+		$addonId = 2;
+		$product = $this->service->getProduct($addonId);
+		$this->assertNotEmpty($product);
 	}
 
 	public function testGetTransferConfigs()

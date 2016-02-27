@@ -420,7 +420,7 @@ class Service
 		if ($this->products === null) {
 			$this->products = [];
 
-			$url = $this->getApiUrl('/apps');
+			$url = $this->getApiUrl('/products');
 			$response = $this->httpClient->send($url);
 			$errorMessage = "Couldn't retrieve WoW servers";
 			$this->checkDecodedResponse($response, $errorMessage);
@@ -450,7 +450,7 @@ class Service
 		if (isset($this->products[$idName])) {
 			return $this->products[$idName];
 		}
-		$url = $this->getApiUrl('/apps/' . $idName);
+		$url = $this->getApiUrl('/products/' . $idName);
 		$response = $this->httpClient->send($url);
 		$this->checkDecodedResponse($response);
 		$appSource = $response->getDecodedBody();
