@@ -566,7 +566,7 @@ class Service
 	 * @param int $id
 	 * @return array
 	 */
-	public function getUserDump($id)
+	public function getUserDump($id, $field = false)
 	{
 		$params = ['access_token' => $this->accessToken];
 		$headers = [];
@@ -574,7 +574,11 @@ class Service
 			$authValue = base64_encode($this->username . ':' . $this->password);
 			$headers[] = 'Authorization: Basic ' . $authValue;
 		}
-		$url = $this->getApiUrl('/user/dumps/' . $id, $params);
+		$route = '/user/dumps/' . $id;
+		if ($field) {
+			$route .= '/' . $field;
+		}
+		$url = $this->getApiUrl($route, $params);
 		$response = $this->httpClient->send($url, 'GET', null, $headers);
 		$this->checkDecodedResponse($response);
 		return $response->getDecodedBody();
@@ -594,6 +598,43 @@ class Service
 		$url = $this->getApiUrl('/users', $params);
 		$response = $this->httpClient->send($url);
 		$errorMessage = "Couldn't retrieve users";
+		$this->checkDecodedResponse($response, $errorMessage);
+		return $response->getDecodedBody();
+	}
+
+	/**
+	 * @param int $userId
+	 * @param int $pageNumber
+	 * @param int $perPage
+	 * @return array
+	 */
+	public function getUsersDumps($userId, $pageNumber = 1, $perPage = 100)
+	{
+		$params = [
+			'page' => $pageNumber,
+			'per_page' => $perPage,
+		];
+		$url = $this->getApiUrl('/users/' . $userId . '/dumps', $params);
+		$response = $this->httpClient->send($url);
+		$errorMessage = "Couldn't retrieve user dumps";
+		$this->checkDecodedResponse($response, $errorMessage);
+		return $response->getDecodedBody();
+	}
+
+	/**
+	 * @param int $userId
+	 * @param int $dumpId
+	 * @return array
+	 */
+	public function getUsersDump($userId, $dumpId, $field = false)
+	{
+		$route = '/users/' . $userId . '/dumps/' . $dumpId;
+		if ($field) {
+			$route .= '/' . $field;
+		}
+		$url = $this->getApiUrl($route);
+		$response = $this->httpClient->send($url);
+		$errorMessage = "Couldn't retrieve user dump";
 		$this->checkDecodedResponse($response, $errorMessage);
 		return $response->getDecodedBody();
 	}

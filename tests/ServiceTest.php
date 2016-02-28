@@ -115,6 +115,14 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 		$this->assertNotEmpty($dump);
 	}
 
+	public function testGetUserDumpOneField()
+	{
+		$dumpId = 40;
+		$fieldName = 'global';
+		$dump = $this->service->getUserDump($dumpId, $fieldName);
+		$this->assertNotEmpty($dump);
+	}
+
 	public function testAuthByBasic()
 	{
 		$service = $this->service;
@@ -151,6 +159,27 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 	public function testGetUsers()
 	{
 		$this->service->getUsers();
+	}
+
+	public function testGetUsersDumps()
+	{
+		$userId = 3;
+		$this->service->getUsersDumps($userId);
+	}
+
+	public function testGetUsersDump()
+	{
+		$userId = 3;
+		$dumpId = 41;
+		$this->service->getUsersDump($userId, $dumpId);
+	}
+
+	public function testGetUsersDumpOneField()
+	{
+		$userId = 3;
+		$dumpId = 41;
+		$fieldName = 'global';
+		$this->service->getUsersDump($userId, $dumpId, $fieldName);
 	}
 
 	/**
