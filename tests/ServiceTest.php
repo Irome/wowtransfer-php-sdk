@@ -91,6 +91,30 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 		$this->service->getUserInfo();
 	}
 
+	public function testGetUserTransferConfigs()
+	{
+		$this->service->getUserTransferConfigs();
+	}
+
+	public function testGetUserTransferConfig()
+	{
+		$configId = 14;
+		$config = $this->service->getUserTransferConfig($configId);
+		$this->assertNotEmpty($config);
+	}
+
+	public function testGetUserDumps()
+	{
+		$this->service->getUserDumps();
+	}
+
+	public function testGetUserDump()
+	{
+		$dumpId = 40;
+		$dump = $this->service->getUserDump($dumpId);
+		$this->assertNotEmpty($dump);
+	}
+
 	public function testAuthByBasic()
 	{
 		$service = $this->service;

@@ -50,11 +50,6 @@ class Service
 	/**
 	 * @var array
 	 */
-	protected $transferConfigs;
-
-	/**
-	 * @var array
-	 */
 	protected $cores;
 
 	/**
@@ -335,19 +330,14 @@ class Service
 
 	/**
 	 * @return array
-	 * @todo global or user?
 	 */
 	public function getTransferConfigs()
 	{
-		if ($this->transferConfigs === null) {
-			$params = ['access_token' => $this->getAccessToken()];
-			$url = $this->getApiUrl('/tconfigs', $params);
-			$response = $this->httpClient->send($url);
-			$errorMessage = "Couldn't get transfer configurations from service";
-			$this->checkDecodedResponse($response, $errorMessage);
-			$this->transferConfigs = $response->getDecodedBody();
-		}
-		return $this->transferConfigs;
+		$url = $this->getApiUrl('/tconfigs');
+		$response = $this->httpClient->send($url);
+		$errorMessage = "Couldn't get transfer configurations from service";
+		$this->checkDecodedResponse($response, $errorMessage);
+		return $response->getDecodedBody();
 	}
 
 	/**
@@ -516,6 +506,75 @@ class Service
 			$headers[] = 'Authorization: Basic ' . $authValue;
 		}
 		$url = $this->getApiUrl('/user', $params);
+		$response = $this->httpClient->send($url, 'GET', null, $headers);
+		$this->checkDecodedResponse($response);
+		return $response->getDecodedBody();
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getUserTransferConfigs()
+	{
+		$params = ['access_token' => $this->accessToken];
+		$headers = [];
+		if ($this->username && $this->password) {
+			$authValue = base64_encode($this->username . ':' . $this->password);
+			$headers[] = 'Authorization: Basic ' . $authValue;
+		}
+		$url = $this->getApiUrl('/user/tconfigs', $params);
+		$response = $this->httpClient->send($url, 'GET', null, $headers);
+		$this->checkDecodedResponse($response);
+		return $response->getDecodedBody();
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getUserTransferConfig($id)
+	{
+		$params = ['access_token' => $this->accessToken];
+		$headers = [];
+		if ($this->username && $this->password) {
+			$authValue = base64_encode($this->username . ':' . $this->password);
+			$headers[] = 'Authorization: Basic ' . $authValue;
+		}
+		$url = $this->getApiUrl('/user/tconfigs/' . $id, $params);
+		$response = $this->httpClient->send($url, 'GET', null, $headers);
+		$this->checkDecodedResponse($response);
+		return $response->getDecodedBody();
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getUserDumps()
+	{
+		$params = ['access_token' => $this->accessToken];
+		$headers = [];
+		if ($this->username && $this->password) {
+			$authValue = base64_encode($this->username . ':' . $this->password);
+			$headers[] = 'Authorization: Basic ' . $authValue;
+		}
+		$url = $this->getApiUrl('/user/dumps', $params);
+		$response = $this->httpClient->send($url, 'GET', null, $headers);
+		$this->checkDecodedResponse($response);
+		return $response->getDecodedBody();
+	}
+
+	/**
+	 * @param int $id
+	 * @return array
+	 */
+	public function getUserDump($id)
+	{
+		$params = ['access_token' => $this->accessToken];
+		$headers = [];
+		if ($this->username && $this->password) {
+			$authValue = base64_encode($this->username . ':' . $this->password);
+			$headers[] = 'Authorization: Basic ' . $authValue;
+		}
+		$url = $this->getApiUrl('/user/dumps/' . $id, $params);
 		$response = $this->httpClient->send($url, 'GET', null, $headers);
 		$this->checkDecodedResponse($response);
 		return $response->getDecodedBody();
