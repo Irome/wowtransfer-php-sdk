@@ -18,6 +18,21 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 	 */
 	private $service;
 
+	/**
+	 * @var int
+	 */
+	protected $userId = 3;
+
+	/**
+	 * @var int
+	 */
+	protected $transferConfigId = 14;
+
+	/**
+	 * @var int
+	 */
+	protected $dumpId = 41;
+
 	public function __construct($name = null, $data = [], $dataName = '')
 	{
 		parent::__construct($name, $data, $dataName);
@@ -98,8 +113,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
 	public function testGetUserTransferConfig()
 	{
-		$configId = 14;
-		$config = $this->service->getUserTransferConfig($configId);
+		$config = $this->service->getUserTransferConfig($this->transferConfigId);
 		$this->assertNotEmpty($config);
 	}
 
@@ -110,16 +124,14 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
 	public function testGetUserDump()
 	{
-		$dumpId = 40;
-		$dump = $this->service->getUserDump($dumpId);
+		$dump = $this->service->getUserDump($this->dumpId);
 		$this->assertNotEmpty($dump);
 	}
 
 	public function testGetUserDumpOneField()
 	{
-		$dumpId = 40;
 		$fieldName = 'global';
-		$dump = $this->service->getUserDump($dumpId, $fieldName);
+		$dump = $this->service->getUserDump($this->dumpId, $fieldName);
 		$this->assertNotEmpty($dump);
 	}
 
@@ -161,25 +173,30 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 		$this->service->getUsers();
 	}
 
+	public function testGetUsersTransferConfigurations()
+	{
+		$this->service->getUsersTransferConfigurations($this->userId);
+	}
+
+	public function testGetUsersTransferConfiguration()
+	{
+		$this->service->getUsersTransferConfiguration($this->userId, $this->transferConfigId);
+	}
+
 	public function testGetUsersDumps()
 	{
-		$userId = 3;
-		$this->service->getUsersDumps($userId);
+		$this->service->getUsersDumps($this->userId);
 	}
 
 	public function testGetUsersDump()
 	{
-		$userId = 3;
-		$dumpId = 41;
-		$this->service->getUsersDump($userId, $dumpId);
+		$this->service->getUsersDump($this->userId, $this->dumpId);
 	}
 
 	public function testGetUsersDumpOneField()
 	{
-		$userId = 3;
-		$dumpId = 41;
 		$fieldName = 'global';
-		$this->service->getUsersDump($userId, $dumpId, $fieldName);
+		$this->service->getUsersDump($this->userId, $this->dumpId, $fieldName);
 	}
 
 	/**

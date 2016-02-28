@@ -640,6 +640,39 @@ class Service
 	}
 
 	/**
+	 * @param int $userId
+	 * @param int $pageNumber
+	 * @param int $perPage
+	 * @return array
+	 */
+	public function getUsersTransferConfigurations($userId, $pageNumber = 1, $perPage = 20)
+	{
+		$params = [
+			'page' => $pageNumber,
+			'per_page' => $perPage,
+		];
+		$url = $this->getApiUrl('/users/' . $userId . '/tconfigs', $params);
+		$response = $this->httpClient->send($url);
+		$errorMessage = "Couldn't retrieve users transfer configurations";
+		$this->checkDecodedResponse($response, $errorMessage);
+		return $response->getDecodedBody();
+	}
+
+	/**
+	 * @param int $userId
+	 * @param int $id
+	 * @return array
+	 */
+	public function getUsersTransferConfiguration($userId, $id)
+	{
+		$url = $this->getApiUrl('/users/' . $userId . '/tconfigs/' . $id);
+		$response = $this->httpClient->send($url);
+		$errorMessage = "Couldn't retrieve users transfer configuration";
+		$this->checkDecodedResponse($response, $errorMessage);
+		return $response->getDecodedBody();
+	}
+
+	/**
 	 * @return array
 	 */
 	public function getUsersById($userId)
