@@ -99,6 +99,16 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
 	public function testDumpToSql()
 	{
+		$luaDumpFilePath = __DIR__ . '/dumps/chardumps.lua';
+		$requestParams = new \Wowtransfer\DumpToSqlParams();
+		$requestParams->accountId = 1;
+		$requestParams->charactersDb = 'characters';
+		$requestParams->dumpLua = file_get_contents($luaDumpFilePath);
+		$requestParams->transferConfigName = $this->transferConfigId;
+		$requestParams->transferOptions = ['achievement'];
+
+		$sql = $this->service->dumpToSql($requestParams);
+		$this->assertNotEmpty($sql);
 	}
 
 	public function testGetUserInfo()

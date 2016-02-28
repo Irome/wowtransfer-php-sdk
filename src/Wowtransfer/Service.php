@@ -311,7 +311,7 @@ class Service
 		fwrite($file, $luaDumpContent);
 		fclose($file);
 
-		$dumpFile = new CURLFile($filePath, self::LUA_MIME_TYPE, 'chardumps.lua');
+		$dumpFile = new \CURLFile($filePath, self::LUA_MIME_TYPE, 'chardumps.lua');
 		$postFields = [
 			'dump_lua' => $dumpFile,
 			'fields' => implode(',', $fields),
@@ -374,8 +374,9 @@ class Service
 		fwrite($file, gzencode($params->dumpLua));
 		fclose($file);
 
-		$dumpFile = new CURLFile($filePath, self::LUA_MIME_TYPE, 'chardumps.lua');
+		$dumpFile = new \CURLFile($filePath, self::LUA_MIME_TYPE, 'chardumps.lua');
 		$postFields = [
+			'action' => 'dump_to_sql',
 			'dump_lua' => $dumpFile,
 			'dump_encode' => 'gzip',
 			'configuration_id' => $params->transferConfigName,
@@ -383,7 +384,7 @@ class Service
 			'access_token' => $this->getAccessToken(),
 			'transfer_options' => implode(';', $params->transferOptions),
 		];
-		$url = $this->getApiUrl('/dumps/sql');
+		$url = $this->getApiUrl('/dumps');
 		$headers = ['Content-type: multipart/form-data'];
 		$response = $this->httpClient->send($url, 'POST', $postFields, $headers);
 
