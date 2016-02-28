@@ -71,6 +71,17 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 	{
 	}
 
+	public function testGetDumps()
+	{
+		$this->service->getDumps();
+	}
+
+	public function testGetDumpsFields()
+	{
+		$fields = $this->service->getDumpsFields();
+		$this->assertNotEmpty($fields);
+	}
+
 	public function testDumpToSql()
 	{
 	}

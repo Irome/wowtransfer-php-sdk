@@ -63,6 +63,11 @@ class Service
 	protected $products;
 
 	/**
+	 * @var string[]
+	 */
+	protected $dumpsFields;
+
+	/**
 	 * @var \Wowtransfer\HttpClient
 	 */
 	private $httpClient;
@@ -263,6 +268,33 @@ class Service
 			}
 			throw new ServiceException($errorMessage);
 		}
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getDumps()
+	{
+		$url = $this->getApiUrl('/dumps');
+		$response = $this->httpClient->send($url);
+		$errorMessage = "Could't retrieve public dumps";
+		$this->checkDecodedResponse($response, $errorMessage);
+		return $response->getDecodedBody();
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function getDumpsFields()
+	{
+		if ($this->dumpsFields === null) {
+			$url = $this->getApiUrl('/dumps/fields');
+			$response = $this->httpClient->send($url);
+			$errorMessage = "Could't retrieve dumps fields";
+			$this->checkDecodedResponse($response, $errorMessage);
+			$this->dumpsFields = $response->getDecodedBody();
+		}
+		return $this->dumpsFields;
 	}
 
 	/**
