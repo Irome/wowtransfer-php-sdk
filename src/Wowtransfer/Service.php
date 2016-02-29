@@ -604,6 +604,25 @@ class Service
 	}
 
 	/**
+	 * @param \Wowtransfer\Models\User $user
+	 */
+	public function updateUser($user)
+	{
+		$userArr = (array)$user;
+		$postFields = json_encode($userArr);
+		$params = ['access_token' => $this->accessToken];
+		$headers = [];
+		if ($this->username && $this->password) {
+			$authValue = base64_encode($this->username . ':' . $this->password);
+			$headers[] = 'Authorization: Basic ' . $authValue;
+		}
+		$url = $this->getApiUrl('/user', $params);
+		$response = $this->httpClient->send($url, 'PATCH', $postFields, $headers);
+
+		return $response->getHttpStatusCode() === 204;
+	}
+
+	/**
 	 * @param int $userId
 	 * @param int $pageNumber
 	 * @param int $perPage

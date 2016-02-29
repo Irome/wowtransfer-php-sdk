@@ -216,4 +216,12 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->service->getUsersById(1);
 	}
+
+	public function testUpdateUser()
+	{
+		$user = new \Wowtransfer\Models\User($this->userId);
+		$user->setName('Test');
+		$user->setLastName('TestLastName');
+		$this->service->updateUser($user);
+	}
 }
