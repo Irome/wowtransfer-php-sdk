@@ -263,16 +263,17 @@ class Service
 	 */
 	protected function checkResponse($response, $errorMessage = null)
 	{
-		if ($response->getHttpStatusCode() !== 200) {
+		$statusCode = $response->getHttpStatusCode();
+		if (!in_array($statusCode, [200, 201, 204])) {
 			$decodedBody = $response->getDecodedBody();
 			if (isset($decodedBody['error_message'])) {
 				throw new ServiceException($decodedBody['error_message']);
 			}
 			if ($errorMessage) {
-				$errorMessage .= ', response status code ' . $response->getHttpStatusCode();
+				$errorMessage .= ', response status code ' . $statusCode;
 			}
 			else {
-				$errorMessage = 'Response status code ' . $response->getHttpStatusCode();
+				$errorMessage = 'Response status code ' . $statusCode;
 			}
 			throw new ServiceException($errorMessage);
 		}
@@ -632,9 +633,7 @@ class Service
 		$url = $this->getApiUrl('/user', $params);
 		$response = $this->httpClient->send($url, 'PATCH', $postFields, $headers);
 
-		if ($response->getHttpStatusCode() !== 200) {
-			// TODO: throw exception
-		}
+		$this->checkResponse($response);
 
 		return true;
 	}
@@ -695,9 +694,8 @@ class Service
 		}
 		$url = $this->getApiUrl('/user/dumps/' . $dumpId, $params);
 		$response = $this->httpClient->send($url, 'DELETE', null, $headers);
-		if ($response->getHttpStatusCode() !== 200) {
-			// TODO: throw exception
-		}
+
+		$this->checkResponse($response);
 
 		return true;
 	}
