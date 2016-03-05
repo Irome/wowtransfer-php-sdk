@@ -678,6 +678,7 @@ class Service
 	/**
 	 * @param int $dumpId
 	 * @return boolean
+	 * @throws \Wowtransfer\Exceptions\ServiceException
 	 */
 	public function deleteUserDump($dumpId)
 	{
@@ -693,6 +694,31 @@ class Service
 			$headers[] = 'Authorization: Basic ' . $authValue;
 		}
 		$url = $this->getApiUrl('/user/dumps/' . $dumpId, $params);
+		$response = $this->httpClient->send($url, 'DELETE', null, $headers);
+
+		$this->checkResponse($response);
+
+		return true;
+	}
+
+	/**
+	 * @return boolean
+	 * @throws \Wowtransfer\Exceptions\ServiceException
+	 */
+	public function deleteUserAllDumps()
+	{
+		$params = [
+			'access_token' => $this->accessToken,
+		];
+		if ($this->test) {
+			$params['test'] = 1;
+		}
+		$headers = [];
+		if ($this->username && $this->password) {
+			$authValue = base64_encode($this->username . ':' . $this->password);
+			$headers[] = 'Authorization: Basic ' . $authValue;
+		}
+		$url = $this->getApiUrl('/user/dumps/', $params);
 		$response = $this->httpClient->send($url, 'DELETE', null, $headers);
 
 		$this->checkResponse($response);

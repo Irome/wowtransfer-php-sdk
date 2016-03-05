@@ -145,6 +145,13 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 		$this->service->setTest(false);
 	}
 
+	public function testDeleteUserAllDumps()
+	{
+		$this->service->setTest();
+		$this->service->deleteUserAllDumps();
+		$this->service->setTest(false);
+	}
+
 	public function testGetUserDumpOneField()
 	{
 		$fieldName = 'global';
