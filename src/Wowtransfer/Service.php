@@ -600,6 +600,47 @@ class Service
 	}
 
 	/**
+	 * @param string $dumpLua
+	 * @param int $status
+	 * @return boolean
+	 * @throws ServiceException
+	 */
+	public function createUserDump($dumpLua, $status = 0)
+	{
+		$filePath = sys_get_temp_dir() . '/' . uniqid() . '.lua';
+		$file = fopen($filePath, 'w');
+		if (!$file) {
+			$message = 'Couldn`t open file ' . $filePath;
+			throw new ServiceException($message);
+		}
+		fwrite($file, $dumpLua); // gzencode($dumpLua)
+		fclose($file);
+
+		$dumpFile = new \CURLFile($filePath, self::LUA_MIME_TYPE, 'chardumps.lua');
+		$postFields = [
+			'dump_lua' => $dumpFile,
+			'status' => $status,
+		];
+		$params = ['access_token' => $this->accessToken];
+		if ($this->test) {
+			$params['test'] = 1;
+		}
+		$headers = ['Content-type: multipart/form-data'];
+		if ($this->username && $this->password) {
+			$authValue = base64_encode($this->username . ':' . $this->password);
+			$headers[] = 'Authorization: Basic ' . $authValue;
+		}
+		$url = $this->getApiUrl('/user/dumps', $params);
+		$response = $this->httpClient->send($url, 'POST', $postFields, $headers);
+
+		unlink($filePath);
+
+		$this->checkResponse($response);
+
+		return $response->getHttpStatusCode() === 201;
+	}
+
+	/**
 	 * @param int $pageNumber Start with 1
 	 * @param int $perPage
 	 * @return array

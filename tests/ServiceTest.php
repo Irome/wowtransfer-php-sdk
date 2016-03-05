@@ -132,6 +132,14 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 		$this->service->getUserDumps();
 	}
 
+	public function testCreateUserDump()
+	{
+		$luaDumpFilePath = __DIR__ . '/dumps/chardumps.lua';
+		$this->service->setTest();
+		$this->service->createUserDump(file_get_contents($luaDumpFilePath));
+		$this->service->setTest(false);
+	}
+
 	public function testGetUserDump()
 	{
 		$dump = $this->service->getUserDump($this->dumpId);
