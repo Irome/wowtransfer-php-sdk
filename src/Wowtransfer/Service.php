@@ -67,6 +67,11 @@ class Service
 	 */
 	private $httpClient;
 
+	/**
+	 * @var boolean
+	 */
+	private $test;
+
 	public function __construct($accessToken)
 	{
 		if (empty($accessToken)) {
@@ -98,6 +103,14 @@ class Service
 	{
 		$this->language = $value;
 		return $this;
+	}
+
+	/**
+	 * @param boolean $value
+	 */
+	public function setTest($value = true)
+	{
+		$this->test = $value;
 	}
 
 	/**
@@ -619,7 +632,11 @@ class Service
 		$url = $this->getApiUrl('/user', $params);
 		$response = $this->httpClient->send($url, 'PATCH', $postFields, $headers);
 
-		return $response->getHttpStatusCode() === 204;
+		if ($response->getHttpStatusCode() !== 200) {
+			// TODO: throw exception
+		}
+
+		return true;
 	}
 
 	/**
@@ -657,6 +674,32 @@ class Service
 		$errorMessage = "Couldn't retrieve user dump";
 		$this->checkDecodedResponse($response, $errorMessage);
 		return $response->getDecodedBody();
+	}
+
+	/**
+	 * @param int $dumpId
+	 * @return boolean
+	 */
+	public function deleteUserDump($dumpId)
+	{
+		$params = [
+			'access_token' => $this->accessToken,
+		];
+		if ($this->test) {
+			$params['test'] = 1;
+		}
+		$headers = [];
+		if ($this->username && $this->password) {
+			$authValue = base64_encode($this->username . ':' . $this->password);
+			$headers[] = 'Authorization: Basic ' . $authValue;
+		}
+		$url = $this->getApiUrl('/user/dumps/' . $dumpId, $params);
+		$response = $this->httpClient->send($url, 'DELETE', null, $headers);
+		if ($response->getHttpStatusCode() !== 200) {
+			// TODO: throw exception
+		}
+
+		return true;
 	}
 
 	/**
