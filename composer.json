@@ -1,22 +1,26 @@
 {
     "name": "wowtransfer/php-sdk",
     "description": "Wowtransfer SDK for PHP",
-    "keywords":["wowtransfer","sdk"],
-    "type":"library",
+    "keywords": ["wowtransfer", "sdk"],
+    "type": "library",
     "license": "MIT",
     "minimum-stability": "dev",
+    "support": {
+        "issues": "https://github.com/wowtransfer/wowtransfer-php-sdk/issues",
+        "wiki": "https://github.com/wowtransfer/wowtransfer-php-sdk/wiki"
+    },
     "require": {
-		"php": ">=5.6.0"
+        "php": ">=5.6.0"
     },
     "require-dev": {
-		"phpunit/phpunit": "~4.0"
+        "phpunit/phpunit": "~4.0"
     },
     "autoload": {
         "psr-4": {
             "Wowtransfer\\": "src/Wowtransfer/"
         }
     },
-	"autoload-dev": {
+    "autoload-dev": {
         "psr-4": {
             "Wowtransfer\\Tests\\": "tests/"
         }
@@ -31,8 +35,7 @@
             "homepage": "https://github.com/wowtransfer/wowtransfer-php-sdk/graphs/contributors"
         }
     ],
-    "support": {
-        "issues": "https://github.com/wowtransfer/wowtransfer-php-sdk/issues",
-        "wiki": "https://github.com/wowtransfer/wowtransfer-php-sdk/wiki"
+    "autoload": {
+        "classmap": ["src"]
     }
 }
