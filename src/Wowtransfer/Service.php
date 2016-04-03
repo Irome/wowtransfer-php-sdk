@@ -327,10 +327,11 @@ class Service
 
 		$dumpFile = new \CURLFile($filePath, self::LUA_MIME_TYPE, 'chardumps.lua');
 		$postFields = [
+			'action' => 'dump_by_fields',
 			'dump_lua' => $dumpFile,
 			'fields' => implode(',', $fields),
 		];
-		$url = $this->getApiUrl('/dumps/fields');
+		$url = $this->getApiUrl('/dumps');
 		$headers = ['Content-type: multipart/form-data'];
 		$response = $this->httpClient->send($url, 'POST', $postFields, $headers);
 

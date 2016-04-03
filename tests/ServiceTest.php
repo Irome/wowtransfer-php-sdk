@@ -84,6 +84,16 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
 	public function testGetDump()
 	{
+		$luaDumpContent = $this->getLuaDumpContent();
+		$dump = $this->service->getDump($luaDumpContent);
+		$this->assertNotEmpty($dump);
+	}
+
+	public function testGetDumpByFields()
+	{
+		$luaDumpContent = $this->getLuaDumpContent();
+		$dump = $this->service->getDump($luaDumpContent, ['player', 'global']);
+		$this->assertNotEmpty($dump);
 	}
 
 	public function testGetDumps()
@@ -99,11 +109,11 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
 	public function testDumpToSql()
 	{
-		$luaDumpFilePath = __DIR__ . '/dumps/chardumps.lua';
+		$luaDumpContent = $this->getLuaDumpContent();
 		$requestParams = new \Wowtransfer\DumpToSqlParams();
 		$requestParams->accountId = 1;
 		$requestParams->charactersDb = 'characters';
-		$requestParams->dumpLua = file_get_contents($luaDumpFilePath);
+		$requestParams->dumpLua = $luaDumpContent;
 		$requestParams->transferConfigName = $this->transferConfigId;
 		$requestParams->transferOptions = ['achievement'];
 
@@ -134,9 +144,9 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
 	public function testCreateUserDump()
 	{
-		$luaDumpFilePath = __DIR__ . '/dumps/chardumps.lua';
+		$luaDumpContent = $this->getLuaDumpContent();
 		$this->service->setTest();
-		$this->service->createUserDump(file_get_contents($luaDumpFilePath));
+		$this->service->createUserDump($luaDumpContent);
 		$this->service->setTest(false);
 	}
 
@@ -245,5 +255,14 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 		$user->setName('Test');
 		$user->setLastName('TestLastName');
 		$this->service->updateUser($user);
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getLuaDumpContent()
+	{
+		$luaDumpFilePath = __DIR__ . '/dumps/chardumps.lua';
+		return file_get_contents($luaDumpFilePath);
 	}
 }
