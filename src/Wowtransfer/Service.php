@@ -97,7 +97,7 @@ class Service
 
 	/**
 	 * @param string $value
-	 * @return \Wowtransfer
+	 * @return \Wowtransfer\Service
 	 */
 	public function setLanguage($value)
 	{
