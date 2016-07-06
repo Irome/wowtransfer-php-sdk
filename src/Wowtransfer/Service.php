@@ -72,10 +72,15 @@ class Service
 	 */
 	private $test;
 
+    /**
+     * @var array Key and value table
+     */
+    private $L;
+
 	public function __construct($accessToken)
 	{
 		if (empty($accessToken)) {
-			throw new ServiceException('Empty access token');
+			throw new ServiceException($this->t('Empty access token'));
 		}
 		$this->accessToken = $accessToken;
 
@@ -88,6 +93,15 @@ class Service
 	}
 
 	/**
+     * @param string $message
+     * @return string
+     */
+    public function t($message)
+    {
+        return isset($this->L[$message]) ? $this->L[$message] : $message;
+    }
+
+    /**
 	 * @return string
 	 */
 	public function getLanguage()
@@ -96,16 +110,23 @@ class Service
 	}
 
 	/**
-	 * @param string $value
-	 * @return \Wowtransfer\Service
-	 */
-	public function setLanguage($value)
-	{
-		$this->language = $value;
-		return $this;
-	}
+     * @param string $value
+     * @return \Wowtransfer\Service
+     */
+    public function setLanguage($value)
+    {
+        $this->language = $value;
 
-	/**
+        $this->L = [];
+        $filePath = __DIR__ . '/messages/' . $this->getLanguage() . '.php';
+        if (file_exists($filePath)) {
+            $this->L = require $filePath;
+        }
+
+        return $this;
+    }
+
+    /**
 	 * @param boolean $value
 	 */
 	public function setTest($value = true)
