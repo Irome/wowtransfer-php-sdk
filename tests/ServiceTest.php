@@ -263,14 +263,10 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
         $message = 'Empty access token';
         $translatedMessage = $this->service->t($message);
-        echo 'source message: ', $message, "\n";
-        echo 'transtaled message: ', $translatedMessage, "\n";
         $this->assertNotEmpty($translatedMessage);
 
         $message2 = 'This is only english message';
         $translatedMessage2 = $this->service->t($message2);
-        echo 'source message: ', $message2, "\n";
-        echo 'transtaled message: ', $translatedMessage2, "\n";
         $this->assertNotEmpty($translatedMessage2);
 	}
 
