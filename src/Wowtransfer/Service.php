@@ -195,7 +195,7 @@ class Service
 	public function setBaseUrl($url)
 	{
 		if (empty($url)) {
-			throw new ServiceException('Empty base url');
+			throw new ServiceException($this->t('Empty base url'));
 		}
 
 		if ($url[strlen($url) - 1] === '/') {
@@ -256,7 +256,7 @@ class Service
 		if ($this->cores === null) {
 			$url = $this->getApiUrl('/cores');
 			$response = $this->httpClient->send($url);
-			$errorMessage = "Could't get cores from the service";
+			$errorMessage = $this->t("Could't get cores from the service");
 			$this->checkDecodedResponse($response, $errorMessage);
 			$this->cores = $response->getDecodedBody();
 		}
@@ -290,11 +290,12 @@ class Service
 			if (isset($decodedBody['error_message'])) {
 				throw new ServiceException($decodedBody['error_message']);
 			}
+            $responseMessage = $this->t('Response status code');
 			if ($errorMessage) {
-				$errorMessage .= ', response status code ' . $statusCode;
+				$errorMessage .= ', ' . $responseMessage . ' ' . $statusCode;
 			}
 			else {
-				$errorMessage = 'Response status code ' . $statusCode;
+				$errorMessage = $responseMessage . ' ' . $statusCode;
 			}
 			throw new ServiceException($errorMessage);
 		}
@@ -307,7 +308,7 @@ class Service
 	{
 		$url = $this->getApiUrl('/dumps');
 		$response = $this->httpClient->send($url);
-		$errorMessage = "Could't retrieve public dumps";
+		$errorMessage = $this->t("Couldn't retrieve public dumps");
 		$this->checkDecodedResponse($response, $errorMessage);
 		return $response->getDecodedBody();
 	}
@@ -320,7 +321,7 @@ class Service
 		if ($this->dumpsFields === null) {
 			$url = $this->getApiUrl('/dumps/fields');
 			$response = $this->httpClient->send($url);
-			$errorMessage = "Could't retrieve dumps fields";
+			$errorMessage = $this->t("Couldn't retrieve dumps fields");
 			$this->checkDecodedResponse($response, $errorMessage);
 			$this->dumpsFields = $response->getDecodedBody();
 		}
@@ -336,12 +337,12 @@ class Service
 	public function getDump($luaDumpContent, $fields = [])
 	{
 		if (empty($luaDumpContent)) {
-			throw new ServiceException('Empty dump content');
+			throw new ServiceException($this->t('Empty dump content'));
 		}
 		$filePath = sys_get_temp_dir() . '/' . uniqid() . '.lua';
 		$file = fopen($filePath, 'w');
 		if (!$file) {
-			throw new ServiceException('Couldn`t open file ' . $filePath);
+			throw new ServiceException($this->t("Couldn't open file") . ' ' . $filePath);
 		}
 		fwrite($file, $luaDumpContent);
 		fclose($file);
@@ -356,7 +357,7 @@ class Service
 		$headers = ['Content-type: multipart/form-data'];
 		$response = $this->httpClient->send($url, 'POST', $postFields, $headers);
 
-		$errorMessage = "Couldn't read player dump from JSON";
+		$errorMessage = $this->t("Couldn't read dump from JSON");
 		$this->checkDecodedResponse($response, $errorMessage);
 
 		unlink($filePath);
@@ -371,7 +372,7 @@ class Service
 	{
 		$url = $this->getApiUrl('/tconfigs');
 		$response = $this->httpClient->send($url);
-		$errorMessage = "Couldn't get transfer configurations from service";
+		$errorMessage = $this->t("Couldn't get transfer configurations");
 		$this->checkDecodedResponse($response, $errorMessage);
 		return $response->getDecodedBody();
 	}
@@ -386,7 +387,7 @@ class Service
 		$params = ['access_token' => $this->getAccessToken()];
 		$url = $this->getApiUrl('/user/tconfigs/' . $tconfigId, $params);
 		$response = $this->httpClient->send($url);
-		$errorMessage = "Could't get transfer configuration #$tconfigId from service";
+		$errorMessage = $this->t("Couldn't get transfer configuration");
 		$this->checkDecodedResponse($response, $errorMessage);
 
 		return $response->getDecodedBody();
@@ -404,7 +405,7 @@ class Service
 		$filePath = sys_get_temp_dir() . '/' . uniqid() . '.lua';
 		$file = fopen($filePath, 'w');
 		if (!$file) {
-			$message = 'Couldn`t open file ' . $filePath;
+			$message = $this->t("Couldn't open file") . ' ' . $filePath;
 			throw new ServiceException($message);
 		}
 		fwrite($file, gzencode($params->dumpLua));
@@ -443,7 +444,7 @@ class Service
 	{
 		$url = $this->getApiUrl('/wowservers');
 		$response = $this->httpClient->send($url);
-		$errorMessage = "Couldn't retrieve WoW servers from the service";
+		$errorMessage = $this->t("Couldn't retrieve WoW servers");
 		$this->checkDecodedResponse($response, $errorMessage);
 		$servers = $response->getDecodedBody();
 
@@ -481,7 +482,7 @@ class Service
 
 			$url = $this->getApiUrl('/products');
 			$response = $this->httpClient->send($url);
-			$errorMessage = "Couldn't retrieve WoW servers";
+			$errorMessage = $this->t("Couldn't retrieve products");
 			$this->checkDecodedResponse($response, $errorMessage);
 			$applicationsSource = $response->getDecodedBody();
 
@@ -632,7 +633,7 @@ class Service
 		$filePath = sys_get_temp_dir() . '/' . uniqid() . '.lua';
 		$file = fopen($filePath, 'w');
 		if (!$file) {
-			$message = 'Couldn`t open file ' . $filePath;
+			$message = $this->t("Couldn't open file") . ' ' . $filePath;
 			throw new ServiceException($message);
 		}
 		fwrite($file, $dumpLua); // gzencode($dumpLua)
@@ -675,7 +676,7 @@ class Service
 		];
 		$url = $this->getApiUrl('/users', $params);
 		$response = $this->httpClient->send($url);
-		$errorMessage = "Couldn't retrieve users";
+		$errorMessage = $this->t("Couldn't retrieve users");
 		$this->checkDecodedResponse($response, $errorMessage);
 		return $response->getDecodedBody();
 	}
@@ -715,7 +716,7 @@ class Service
 		];
 		$url = $this->getApiUrl('/users/' . $userId . '/dumps', $params);
 		$response = $this->httpClient->send($url);
-		$errorMessage = "Couldn't retrieve user dumps";
+		$errorMessage = $this->t("Couldn't retrieve dumps");
 		$this->checkDecodedResponse($response, $errorMessage);
 		return $response->getDecodedBody();
 	}
@@ -733,7 +734,7 @@ class Service
 		}
 		$url = $this->getApiUrl($route);
 		$response = $this->httpClient->send($url);
-		$errorMessage = "Couldn't retrieve user dump";
+		$errorMessage = $this->t("Couldn't retrieve dump");
 		$this->checkDecodedResponse($response, $errorMessage);
 		return $response->getDecodedBody();
 	}
@@ -803,7 +804,7 @@ class Service
 		];
 		$url = $this->getApiUrl('/users/' . $userId . '/tconfigs', $params);
 		$response = $this->httpClient->send($url);
-		$errorMessage = "Couldn't retrieve users transfer configurations";
+		$errorMessage = $this->t("Couldn't retrieve users transfer configurations");
 		$this->checkDecodedResponse($response, $errorMessage);
 		return $response->getDecodedBody();
 	}
@@ -817,7 +818,7 @@ class Service
 	{
 		$url = $this->getApiUrl('/users/' . $userId . '/tconfigs/' . $id);
 		$response = $this->httpClient->send($url);
-		$errorMessage = "Couldn't retrieve users transfer configuration";
+		$errorMessage = $this->t("Couldn't retrieve users transfer configuration");
 		$this->checkDecodedResponse($response, $errorMessage);
 		return $response->getDecodedBody();
 	}
@@ -832,7 +833,7 @@ class Service
 		}
 		$url = $this->getApiUrl('/users/' . $userId);
 		$response = $this->httpClient->send($url);
-		$errorMessage = "Couldn't retrieve user by id";
+		$errorMessage = $this->t("Couldn't retrieve user");
 		$this->checkDecodedResponse($response, $errorMessage);
 		return $response->getDecodedBody();
 	}

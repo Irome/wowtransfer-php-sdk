@@ -2,6 +2,6 @@
 
 namespace Wowtransfer\Exceptions;
 
-class ServiceException extends \Exception {
-
+class ServiceException extends \Exception
+{
 }

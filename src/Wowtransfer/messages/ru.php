@@ -1,4 +1,21 @@
 <?php
 return [
+    "Could't get cores from the service" => 'Невозможно получить WoW ядра',
+    "Couldn't get transfer configurations" => 'Невозможно получить конфигурацию переноса',
+    "Couldn't open file" => 'Невозможно открыть файл',
+    "Couldn't read dump from JSON" => 'Невозможно прочитать дамп из JSON',
+    "Couldn't retrieve products" => 'Невозможно получить продукты',
+    "Couldn't retrieve WoW servers" => 'Невозможно получить WoW сервера',
+    "Couldn't retrieve users" => 'Невозможно получить пользователей',
+    "Couldn't retrieve public dumps" => 'Невозможно получить доступные дампы',
+    "Couldn't retrieve dumps fields" => 'Невозможно получить поля дампа',
+    "Couldn't retrieve dump" => 'Невозможно получить дамп',
+    "Couldn't retrieve dumps" => 'Невозможно получить дампы',
+    "Couldn't retrieve user" => 'невозможно получить пользователя',
+    "Couldn't retrieve users transfer configurations" => 'Невозможно получить пользовательские конфигурации переноса',
+    "Couldn't retrieve users transfer configuration" => 'Невозможно получить пользовательскую конфигурацию переноса',
 	'Empty access token' => 'Пусть токен доступа',
+    'Empty base url' => 'Пустой базовый урл',
+    'Empty dump content' => 'Пустой дамп',
+    'Response status code' => 'Код ответа',
 ];
